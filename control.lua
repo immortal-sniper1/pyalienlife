@@ -186,7 +186,7 @@ script.on_init(
 		remote.call("silo_script","set_no_victory", true)
 		global.techswap_recipes = {}
 		recipe_list()
-		log(serpent.block(global.techswap_recipes))
+		--log(serpent.block(global.techswap_recipes))
     end)
 
 script.on_load(function(event)
@@ -985,14 +985,16 @@ script.on_event(
     function(event)
 	log(serpent.block(event.research.effects))
 		for _, recipe in pairs(event.research.effects) do
+			if recipe.type == 'unlock-recipe' and recipe.recipe ~= nil then
 			if global.techswap_recipes[recipe.recipe] ~= nil then
+				log('hit')
 				if event.research.force.recipes[global.techswap_recipes[recipe.recipe].upgrade].enabled == true then
 					event.research.force.recipes[recipe.recipe].enabled = false
 				end
 			end
 		end
         for _, tech in pairs(TRlist) do
-				log(serpent.block(recipes))
+				--log(serpent.block(recipes))
             if event.research.name == tech.tech then
                 --log(serpent.block(tech))
                 if event.research.force.recipes[tech.oldrecipe] ~= nil and event.research.force.recipes[tech.newrecipe] ~= nil then
@@ -1030,6 +1032,7 @@ script.on_event(
                     event.research.force.recipes[tech.oldrecipe].enabled = false
                 end
             end
-        end
+		end
+	end
     end
 )
